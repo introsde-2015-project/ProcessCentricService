@@ -2,19 +2,14 @@ package introsde.project.rest;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import javax.ejb.*;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -74,6 +69,23 @@ public class ProcessCentricResources {
     public Response newGoal(String goal, @PathParam("personId") int idPerson) {
         Response result = pcModel.addNewGoal(goal, idPerson);
         return result;
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/goals/{goalId}")
+    public Response updateGoal(String goal, @PathParam("personId") int idPerson, @PathParam("goalId") int goalId) {
+    	Response result = pcModel.updateGoal(goal, idPerson, goalId);
+    	return result;
+    }
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/persons/{personId}/timelines")
+    public Response newTimeline(String tl, @PathParam("personId") int idPerson) {
+    	Response result = pcModel.addNewTimeline(tl, idPerson);
+    	return result;
     }
     
 	

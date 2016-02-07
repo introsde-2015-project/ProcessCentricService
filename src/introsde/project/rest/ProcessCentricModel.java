@@ -47,7 +47,15 @@ public class ProcessCentricModel {
     	String jsonString = measure.readEntity(String.class);
     	JSONObject jsonObj = new JSONObject(jsonString);
     	int measureId = jsonObj.getInt("mid");
-    	Response result = businessLogicService.path("/persons/"+personId+"/"+measureType+"/"+measureId+"/checkgoal").request().accept(acceptType).get();
+    	
+    	Response timeline = businessLogicService.path("/persons/"+personId+"/"+measureType+"/"+measureId+"/checkgoal").request().accept(acceptType).get();
+    	String timelineString = timeline.readEntity(String.class);
+    	timelineString = timelineString.replace("'", "");
+    	timelineString = timelineString.replace("\"","'");
+  
+    	String timelineJson = "{" + "\"JSONString\": \""+timelineString+"\"}";
+    	Response result = storageService.path("/persons/"+personId+"/timelines").request().accept(acceptType).post(Entity.json(timelineJson));
+    	
     	return result;
     }
     
@@ -56,15 +64,25 @@ public class ProcessCentricModel {
     	return result;
     }
     
+    public Response updateGoal(String goal, int personId, int goalId) {
+    	Response result = storageService.path("/persons/"+personId+"/goals/"+goalId).request().accept(acceptType).put(Entity.json(goal));
+    	return result;
+    }
+    
+    public Response addNewTimeline(String timelineJson, int personId) {
+    	Response result = storageService.path("/persons/"+personId+"/timeline").request().accept(acceptType).post(Entity.json(timelineJson));
+    	return result;
+    }
+    
 
     private static URI getStorageURI() {
         return UriBuilder.fromUri(
-                "http://localhost:5700/").build();
+                "https://storage-introsde.herokuapp.com/").build();
     }
 
     private static URI getBusinessLogicURI() {
         return UriBuilder.fromUri(
-                "http://localhost:4900/").build();
+                "https://businesslogic-introsde.herokuapp.com/").build();
     }
    
 
