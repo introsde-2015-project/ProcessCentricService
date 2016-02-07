@@ -44,6 +44,9 @@ public class ProcessCentricModel {
     
     public Response addNewMeasureCheckGoal(String measureJson, int personId, String measureType) {
     	Response measure = storageService.path("/persons/"+personId+"/"+measureType).request().accept(acceptType).post(Entity.json(measureJson));
+    	if (measureType.equals("weight")) {
+    		return measure;
+    	}
     	String jsonString = measure.readEntity(String.class);
     	JSONObject jsonObj = new JSONObject(jsonString);
     	int measureId = jsonObj.getInt("mid");
