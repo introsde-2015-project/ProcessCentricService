@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -18,28 +17,11 @@ import javax.ws.rs.core.Response;
 public class ProcessCentricResources {
 	
 	ProcessCentricModel pcModel = new ProcessCentricModel();
-	
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/persons")
-    public Response getPersonList() {
-        Response persons = pcModel.getAllPersons();
-        return persons;
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/persons/{personId}")
-    public Response getPerson(@PathParam("personId") int idPerson) {
-    	Response person = pcModel.getPersonById(idPerson);
-        return person;
-    }
-    
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/persons")
     public Response newPerson(String person){           
         Response result = pcModel.addNewPerson(person);
         return result;

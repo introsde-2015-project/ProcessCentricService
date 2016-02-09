@@ -21,16 +21,6 @@ public class ProcessCentricModel {
     WebTarget storageService = client.target(getStorageURI());
     WebTarget businessLogicService = client.target(getBusinessLogicURI());
     String acceptType = "application/json";
-	
-    public Response getAllPersons() {
-    	Response result = storageService.path("/persons").request().accept(acceptType).get();
-    	return result;
-    }
-    
-    public Response getPersonById(int personId) {
-    	Response result = storageService.path("/persons/"+personId).request().accept(acceptType).get();
-    	return result;
-    }
     
     public Response addNewPerson(String personJson) {
     	Response result = storageService.path("/persons/").request().accept(acceptType).post(Entity.json(personJson));
@@ -76,7 +66,6 @@ public class ProcessCentricModel {
     	Response result = storageService.path("/persons/"+personId+"/timeline").request().accept(acceptType).post(Entity.json(timelineJson));
     	return result;
     }
-    
 
     private static URI getStorageURI() {
         return UriBuilder.fromUri(
