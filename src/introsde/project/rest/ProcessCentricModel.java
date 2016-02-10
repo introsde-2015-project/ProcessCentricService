@@ -34,15 +34,16 @@ public class ProcessCentricModel {
     
     public Response addNewMeasureCheckGoal(String measureJson, int personId, String measureType) {
     	Response measure = storageService.path("/persons/"+personId+"/"+measureType).request().accept(acceptType).post(Entity.json(measureJson));
-    	if (measureType.equals("weight")) {
-    		return measure;
-    	}
-    	String jsonString = measure.readEntity(String.class);
-    	JSONObject jsonObj = new JSONObject(jsonString);
-    	int measureId = jsonObj.getInt("mid");
+    	String measureString = measure.readEntity(String.class);
+    	JSONObject measureObj = new JSONObject(measureString);
+    	int measureId = measureObj.getInt("mid");
     	
     	Response timeline = businessLogicService.path("/persons/"+personId+"/"+measureType+"/"+measureId+"/checkgoal").request().accept(acceptType).get();
     	String timelineString = timeline.readEntity(String.class);
+    	if (timelineString == null || timelineString.isEmpty()) {
+    		return Response.ok(measureObj.toString()).build();
+    	}
+    	
     	timelineString = timelineString.replace("'", "");
     	timelineString = timelineString.replace("\"","'");
   
