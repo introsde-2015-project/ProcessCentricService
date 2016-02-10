@@ -43,8 +43,9 @@ public class ProcessCentricModel {
     	if (timelineString == null || timelineString.isEmpty()) {
     		return Response.ok(measureObj.toString()).build();
     	}
-    	
-    	timelineString = timelineString.replace("'", "");
+    	// Replace single quotes with html codes and change double quotes to 
+    	// single quotes so there is no parsing error
+    	timelineString = timelineString.replace("'", "&#39;");
     	timelineString = timelineString.replace("\"","'");
   
     	String timelineJson = "{" + "\"JSONString\": \""+timelineString+"\"}";
